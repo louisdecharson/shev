@@ -61,5 +61,12 @@ block scripts
                 var input = document.getElementById('loc_ev');
                 var options = {};
                 autocomplete = new google.maps.places.Autocomplete(input, options);
-
+        script.
+                $('.form_ev').on('keyup keypress', function(e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) { 
+                  e.preventDefault();
+                  return false;
+                }
+              });
 
