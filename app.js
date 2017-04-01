@@ -108,7 +108,7 @@ app.get('/view/:id',function(req,res){
         if (err) {
             handleError(res,err.message,"Failed to get post");
         } else {
-            doc.url = "http://localhost:8080/ev/" + doc.idEv;
+            doc.url = "http://sharev.herokuapp.com/ev/" + doc.idEv;
             if (doc.notes === null){doc.notes = "";}
             res.render('view_ev',{ev:doc});
         }
