@@ -1,0 +1,50 @@
+body{
+    margin:0;
+    padding:0;
+    background-image: linear-gradient(#e57e22,#f0c30f);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white !important;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    font-family: 'Open Sans Bold', sans-serif;
+}
+h1, h2, h3, h4, h5, h6, p, label, .btn, a {
+    font-family:"Helvetica";
+}
+
+.title {
+    color:white;
+    font-size: 400%;
+    margin-top: 3%;
+    font-weight: bold;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 1%;
+    text-align:center;
+    /* background-color: rgba(191, 57, 43, 0.2) !important; */
+}
+
+
+a {
+    color:white;
+}
+a:hover {
+    color:#cccccc;
+    text-decoration:none !important;
+}
+
+.jumbotron {
+    margin-top: 10%;
+    background-color: rgba(191, 57, 43, 0.5) !important;
+    color: white;
+}
+
+.form_ev {
+    margin-right: 20%;
+    margin-left: 20%;
+    padding: 5%
+    color: white;
+    
+}

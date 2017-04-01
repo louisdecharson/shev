@@ -1,0 +1,50 @@
+extends layout
+block stylesheets
+        script(src='http://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js')
+        link(rel='stylesheet' href='http://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css')
+        style.
+                body {padding:5%;}
+                #map {width: 100%; height:300px;}
+                #content{margin-left:20%; margin-right:20%; font-weight:bold;}
+block content
+        div(id='content')
+                h1 #{ev.name}
+                p #{ev.loc} 
+                p #{ev.startDate} - #{ev.endDate}
+                div(id='map')
+                p #{ev.notes}
+                a(href=ev.url class="btn btn-primary" role="button" style="margin-right:20px !important;") Link to calendar event
+                button(id="linkEv" data-clipboard-text=ev.url class="btn btn-danger" role="button") Copy link to clipboard        
+
+block scripts
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js")
+
+        script.
+                L.mapbox.accessToken = 'pk.eyJ1IjoibG91aXNkZWNoYXJzb24iLCJhIjoiY2lsemFrYmNtMDBoOXc4bTV3M2pybzBmcSJ9.O4wshToxz8yiykD8q_IcQg';
+                var map = L.mapbox.map('map', 'mapbox.streets','mapbox.light');
+                var geocoder = L.mapbox.geocoder('mapbox.places');
+                geocoder.query('#{ev.loc}', showMap);
+                function showMap(err, data) {
+                if (data.lbounds) {
+                        map.fitBounds(data.lbounds);
+                } else if (data.latlng) {
+                        map.setView([data.latlng[0], data.latlng[1]], 15);
+                        var marker = {
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [data.latlng[1], data.latlng[0]]
+                            },
+                            "properties": {
+                            "title": "#{ev.name}",
+                            "description": "#{ev.notes}",
+                            "marker-color": "#bf392b",
+                            "marker-size":"medium",
+                            }
+                            };
+                        var point = L.mapbox.featureLayer().setGeoJSON(marker).addTo(map);
+                }
+                }
+        script.
+                var clipboard = new Clipboard('#linkEv');
+

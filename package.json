@@ -1,0 +1,33 @@
+{
+  "name": "shev",
+  "version": "0.0.1",
+  "description": "Share Event with anyone",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louisdecharson/shev.git"
+  },
+  "keywords": [
+    "event",
+    "calendar"
+  ],
+  "author": "louisdecharson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/louisdecharson/shev/issues"
+  },
+  "homepage": "https://github.com/louisdecharson/shev#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "ical-generator": "^0.2.9",
+    "mongodb": "^2.2.25",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-beta11",
+    "serve-favicon": "^2.4.2",
+    "shortid": "^2.2.8"
+  }
+}

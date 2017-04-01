@@ -1,0 +1,65 @@
+extends layout
+block stylesheets
+        link(rel='stylesheet' type='text/css' href='/css/bootstrap.min.css')
+        link(rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css')
+block content
+        div(class='title') Share Event                     
+        div(class='form_ev')
+                form(action='/' method='POST' enctype='application/json')
+                        div(class='form-group')
+                                label(for='title') What ?
+                                input(type='title' class='form-control' id='title_ev' name='name' placeholder="Add title")
+                        div(class='form-group')
+                                label(for='location') Where ?
+                                input(type='loc' class='form-control' id='loc_ev' name='loc' placeholder='Add location')
+                        div(class='from-group')
+                                label(for='when') When ?
+                                div(class='row')
+                                        div(class='col-md-6')
+                                                div(class='input-group date' id='datetimepicker1')
+                                                        input(type='text' class='form-control' id='startDate' name='startDate' placeholder='From')
+                                                        span(class='input-group-addon')
+                                                                span(class='glyphicon glyphicon-calendar')
+                                        div(class='col-md-6')
+                                                div(class='input-group date' id='datetimepicker2')
+                                                        input(type='text' class='form-control' id='endDate' name='endDate' placeholder='To')
+                                                        span(class='input-group-addon')
+                                                                span(class='glyphicon glyphicon-calendar')
+                        div(style='margin-top:15px')
+                        div(class='form-group')
+                                label(for='when') Infos ?
+                                textarea(class='form-control' id='input' rows=4 name='notes' placeholder='Add notes')
+                        div(class='form-group')
+                                label(for='when' style='margin-right:10px;') Add alarms
+                                
+                                select(class='custom-select' name='alarm')
+                                        option(value='none') None
+                                        option(value='0') At time of event
+                                        option(value='5') 5 minutes before event
+                                        option(value='10') 10 minutes before event
+                                        option(value='15') 15 minutes before event
+                                        option(value='60') 1 hour before event
+                                        option(value='120') 2 hours before event
+                                        option(value='1440') 1 day before event
+                                        option(value='2880') 2 days before event
+                        div(style='margin-top:25px')                        
+                        button(type="submit" class="btn btn-danger") Create Event
+
+block scripts
+        script(type='text/javascript' src='/js/moment.js')
+        script(type='text/javascript' src='/js/bootstrap-datetimepicker.min.js')
+        script(type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAq92355tQVeKr_xPNXqUJXkg3meNMqhII&libraries=places')
+
+        script.
+                $(function (){
+                    $('#datetimepicker1').datetimepicker();
+                })
+                $(function (){
+                    $('#datetimepicker2').datetimepicker();
+                })
+        script.
+                var input = document.getElementById('loc_ev');
+                var options = {};
+                autocomplete = new google.maps.places.Autocomplete(input, options);
+
+
