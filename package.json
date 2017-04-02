@@ -4,8 +4,8 @@
   "description": "Share Event with anyone",
   "main": "app.js",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,12 @@
   "homepage": "https://github.com/louisdecharson/shev#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "https": "^1.0.0",
     "ical-generator": "^0.2.9",
+    "mapbox": "^1.0.0-beta6",
+    "moment-timezone": "^0.5.11",
     "mongodb": "^2.2.25",
     "path": "^0.12.7",
     "pug": "^2.0.0-beta11",

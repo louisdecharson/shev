@@ -23,7 +23,15 @@ block content
                         span #{ev.startTime} -> #{ev.endTime}
                 else 
                         span(class='glyphicon glyphicon-calendar')
-                        span #{ev.startDate} -> #{ev.endDate}
+                        span From:
+                        span(style="visibility:hidden") To 
+                        span(style="margin-left:-15px") #{ev.startTime} <br/>
+                        span(class='glyphicon glyphicon-calendar' style="visibility:hidden")
+                        span To:
+                        span(style="visibility:hidden") From 
+                        span(style="margin-left:-15px") #{ev.endTime}
+                br
+                br
                 div(id='map')
                 br
                 p Notes 
