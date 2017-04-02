@@ -5,17 +5,32 @@ block stylesheets
         style.
                 body {padding:5%;}
                 #map {width: 100%; height:300px;}
-                #content{margin-left:20%; margin-right:20%; font-weight:bold;}
+                #content{margin-left:10%; margin-right:10%; font-weight:bold; font-size:120%}
+                button {margin-right: 20px !important; margin-top: 20px !important;}
+                .glyphicon {padding-right: 5px;}
+        link(rel='stylesheet' type='text/css' href='/css/bootstrap.min.css')
+
 block content
         div(id='content')
-                h1 #{ev.name}
-                p #{ev.loc} 
-                p #{ev.startDate} - #{ev.endDate}
+                h1(style="display:inline-block;") #{ev.name} 
+                a(href=ev.url style="margin-left: 20px !important; margin-right:20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save' style="color:white;"></span><br/>     
+                span(class='glyphicon glyphicon-map-marker') 
+                span #{ev.loc} <br/>
+                if ev.day
+                        span(class='glyphicon glyphicon-calendar')
+                        span #{ev.day} <br/>
+                        span(class='glyphicon glyphicon-time') 
+                        span #{ev.startTime} -> #{ev.endTime}
+                else 
+                        span(class='glyphicon glyphicon-calendar')
+                        span #{ev.startDate} -> #{ev.endDate}
                 div(id='map')
-                p #{ev.notes}
-                a(href=ev.url class="btn btn-primary" role="button" style="margin-right:20px !important;") Link to calendar event
-                button(id="linkEv" data-clipboard-text=ev.url class="btn btn-danger" role="button") Copy link to clipboard        
-
+                br
+                p Notes 
+                p(style="font-weight:normal;") #{ev.notes}
+                a(href=ev.url class="btn btn-primary" role="button" style="margin-right:20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save'></span> Copy event to calendar
+                button(id="linkEv" data-clipboard-text=ev.url class="btn btn-danger" role="button") <span class='glyphicon glyphicon-pushpin'></span> Copy link to clipboard        
+                
 block scripts
         script(src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js")
         script.
@@ -46,4 +61,3 @@ block scripts
                 }
         script.
                 var clipboard = new Clipboard('#linkEv');
-        

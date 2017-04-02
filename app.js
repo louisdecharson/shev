@@ -58,11 +58,11 @@ mongodb.MongoClient.connect(url, function (err, database) {
 // HANDLING ERROR
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
+    res.status(code || 500).render('error',{error: message});
 }
 
 
-function buildCal(ev,alarms) {
+function buildCal(ev,callback) {
     var cal = ical({
         domain: 'shareevent',
         name: 'Share Event calendar'
@@ -75,13 +75,14 @@ function buildCal(ev,alarms) {
         location: ev.loc
     });
     if (Array.isArray(ev.alarms)) {
-            alarms.forEach(function(item,index){
-                event.createAlarm({type: 'display', trigger: item*60});
-            });
-        } else if (typeof alarms != 'undefined') {
-            event.createAlarm({type: 'display', trigger: alarms*60});
-        }
-    return cal.toString();
+        ev.alarms.forEach(function(item,index){
+            event.createAlarm({type: 'display', trigger: item*60});
+        });
+    } else if (typeof ev.alarms != 'undefined') {
+        console.log(ev.alarms);
+        event.createAlarm({type: 'display', trigger: alarms*60});
+    }
+    callback(cal.toString());
 };
 
 // ROUTES BELOW
@@ -95,7 +96,7 @@ app.post('/',function(req,res){
     newEv.idEv = shortid.generate();
     db.collection('events').insertOne(newEv, function(err, doc) {
         if (err) {
-            handleError(res, err.message, "Failed to create new contact.");
+            handleError(res, err.message, "Failed to create new event.");
         } else {
             res.redirect('/view/'+newEv.idEv);
         }
@@ -107,10 +108,19 @@ app.get('/view/:id',function(req,res){
     db.collection('events').findOne({'idEv': idEv},{'name':1,'loc':1,'startDate':1, 'endDate':1,'notes':1,'alarm':1,'idEv':1}, function(err,doc) {
         if (err) {
             handleError(res,err.message,"Failed to get post");
-        } else {
+        } else if (doc !== null) {
             doc.url = "http://sharev.herokuapp.com/ev/" + doc.idEv;
             if (doc.notes === null){doc.notes = "";}
+            var startDate = new Date(doc.startDate);
+            var endDate = new Date(doc.endDate);
+            if (startDate.getDate() === endDate.getDate() && startDate.getFullYear() === endDate.getFullYear() && startDate.getMonth() === endDate.getMonth()) {
+                doc.day = startDate.getDate().toString() + '/' + (startDate.getMonth()+1).toString() + '/' + startDate.getFullYear().toString();
+                doc.startTime = startDate.getHours().toString() + 'h' + (startDate.getMinutes()<10?'0':'').toString() + startDate.getMinutes().toString();
+                doc.endTime = endDate.getHours().toString() + 'h' + (endDate.getMinutes()<10?'0':'').toString() + endDate.getMinutes();
+            } 
             res.render('view_ev',{ev:doc});
+        } else {
+            handleError(res,"Failed to get event","Failed to get event");
         }
     }); 
 });
@@ -120,10 +130,14 @@ app.get('/ev/:id',function(req,res){
     db.collection('events').findOne({'idEv': idEv},{'name':1,'loc':1,'startDate':1, 'endDate':1,'notes':1,'alarm':1,'idEv':1}, function(err,doc) {
         if (err) {
             handleError(res,err.message,"Failed to get post");
-        } else {
+        } else if (doc !== null) {
             if (doc.notes === null){doc.notes = "";}
             res.setHeader("Content-Type", 'text/calendar');
-            res.send(buildCal(doc));
+            buildCal(doc,function(cal) {
+                res.send(cal);
+            });
+        } else {
+            handleError(res,"Failed to get event","Failed to get event");
         }
     }); 
 });

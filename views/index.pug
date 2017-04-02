@@ -3,12 +3,14 @@ block stylesheets
         link(rel='stylesheet' type='text/css' href='/css/bootstrap.min.css')
         link(rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css')
 block content
-        div(class='title') Share Event                     
+        div(class='title') Share Event
+        p(class='what') Share events with friends via a <i>unique</i> link.
+        button(class="btn btn-danger" style="margin-top:3%" id="showForm") Create Event
         div(class='form_ev')
-                form(action='/' method='POST' enctype='application/json')
+                form(action='/' method='POST' enctype='application/json' id="hiddenform")
                         div(class='form-group')
                                 label(for='title') What ?
-                                input(type='title' class='form-control' id='title_ev' name='name' placeholder="Add title")
+                                input(type='title' class='form-control' id='title_ev' name='name' placeholder="New Event")
                         div(class='form-group')
                                 label(for='location') Where ?
                                 input(type='loc' class='form-control' id='loc_ev' name='loc' placeholder='Add location')
@@ -17,12 +19,12 @@ block content
                                 div(class='row')
                                         div(class='col-md-6')
                                                 div(class='input-group date' id='datetimepicker1')
-                                                        input(type='text' class='form-control' id='startDate' name='startDate' placeholder='From')
+                                                        input(type='text' class='form-control' id='startDate' name='startDate' placeholder='From: MM/YY/DD 12:00 AM')
                                                         span(class='input-group-addon')
                                                                 span(class='glyphicon glyphicon-calendar')
                                         div(class='col-md-6')
                                                 div(class='input-group date' id='datetimepicker2')
-                                                        input(type='text' class='form-control' id='endDate' name='endDate' placeholder='To')
+                                                        input(type='text' class='form-control' id='endDate' name='endDate' placeholder='To: MM/YY/DD 12:00 AM')
                                                         span(class='input-group-addon')
                                                                 span(class='glyphicon glyphicon-calendar')
                         div(style='margin-top:15px')
@@ -43,7 +45,7 @@ block content
                                         option(value='1440') 1 day before event
                                         option(value='2880') 2 days before event
                         div(style='margin-top:25px')                        
-                        button(type="submit" class="btn btn-danger") Create Event
+                        button(type="submit" class="btn btn-danger" style="font-weight:bold;") Create Event
 
 block scripts
         script(type='text/javascript' src='/js/moment.js')
@@ -51,12 +53,19 @@ block scripts
         script(type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAq92355tQVeKr_xPNXqUJXkg3meNMqhII&libraries=places')
 
         script.
+                Date.prototype.addHours = function(h) {    
+                   this.setTime(this.getTime() + (h*60*60*1000)); 
+                   return this;   
+                }
                 $(function (){
-                    $('#datetimepicker1').datetimepicker();
+                    $('#datetimepicker1').datetimepicker({sideBySide:true});
                 })
                 $(function (){
-                    $('#datetimepicker2').datetimepicker();
+                    $('#datetimepicker2').datetimepicker({sideBySide:true});
                 })
+                $("#datetimepicker1").on("dp.change", function (e) {
+                    $('#datetimepicker2').data("DateTimePicker").defaultDate(new Date(e.date).addHours(1));
+                });
         script.
                 var input = document.getElementById('loc_ev');
                 var options = {};
@@ -69,4 +78,14 @@ block scripts
                   return false;
                 }
               });
-
+              
+        script.
+              $(document).ready(function(){
+              $("#showForm").click(function(){
+                  $("#showForm").hide();
+                  $("#hiddenform").show(500);
+                  $(".title").css("margin-top", "1%");
+                  $(".title").text("New Event");
+                  $(".what").text("Create your event and share it");
+              });
+              });
