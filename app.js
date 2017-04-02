@@ -156,7 +156,7 @@ app.get('/view/:id',function(req,res){
         if (err) {
             handleError(res,err.message,"Failed to get post");
         } else if (doc !== null) {
-            doc.url = "http://localhost:8080/ev/" + doc.idEv;
+            doc.url = "http://sharev.herokuapp.com/ev/" + doc.idEv;
             if (doc.notes === null){doc.notes = "";}
             var startDate = moment.tz(doc.startDate,doc.timezone);
             var endDate = moment.tz(doc.endDate,doc.timezone);
