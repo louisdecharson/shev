@@ -80,8 +80,14 @@ function buildCal(ev,callback) {
                 alarms.push(alarm);
             }
         });
-    } else if (typeof ev.alarm != 'undefined') {
-        var alarms = {type: 'display', trigger: ev.alarm*60};
+    } else if (typeof ev.alarm !== 'undefined' && ev.alarm !== 'none') {
+        if (ev.alarm*1 !== 0) {
+            var alarms = [{type: 'display', trigger: ev.alarm*60}];
+        } else {
+            var alarms = [{type: 'display', trigger: 1}];
+        }
+    } else {
+        var alarms = [];
     }
     var cal = ical({
         domain: 'shareevent',
