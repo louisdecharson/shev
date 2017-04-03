@@ -61,10 +61,10 @@ block scripts
                     $('#datetimepicker1').datetimepicker({sideBySide:true});
                 })
                 $(function (){
-                    $('#datetimepicker2').datetimepicker({sideBySide:true});
+                $('#datetimepicker2').datetimepicker({sideBySide:true, useCurrent: false});
                 })
                 $("#datetimepicker1").on("dp.change", function (e) {
-                    $('#datetimepicker2').data("DateTimePicker").defaultDate(new Date(e.date).addHours(1));
+                    $('#datetimepicker2').data("DateTimePicker").date(new Date(e.date).addHours(1));
                 });
         script.
                 var input = document.getElementById('loc_ev');
