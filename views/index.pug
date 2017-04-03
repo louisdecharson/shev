@@ -11,6 +11,10 @@ block content
                         div(class='form-group')
                                 label(for='title') What ?
                                 input(type='title' class='form-control' id='title_ev' name='name' placeholder="New Event")
+                        div(class='alert-empty name' style="margin-top:-10px")
+                                span(class='glyphicon glyphicon-alert' style="padding-right:10px") 
+                                span This field is mandatory ! 
+                                span(class='glyphicon glyphicon-alert' style="padding-left:10px") 
                         div(class='form-group')
                                 label(for='location') Where ?
                                 input(type='loc' class='form-control' id='loc_ev' name='loc' placeholder='Add location')
@@ -27,25 +31,31 @@ block content
                                                         input(type='text' class='form-control' id='endDate' name='endDate' placeholder='To: MM/YY/DD 12:00 AM')
                                                         span(class='input-group-addon')
                                                                 span(class='glyphicon glyphicon-calendar')
+                                div(class='alert-empty date')
+                                        span(class='glyphicon glyphicon-alert' style="padding-right:10px") 
+                                        span This field is mandatory !
+                                        span(class='glyphicon glyphicon-alert' style="padding-left:10px") 
                         div(style='margin-top:15px')
                         div(class='form-group')
                                 label(for='when') Infos ?
                                 textarea(class='form-control' id='input' rows=4 name='notes' placeholder='Add notes')
                         div(class='form-group')
                                 label(for='when' style='margin-right:10px;') Add alarms
-                                
-                                select(class='custom-select' name='alarm')
-                                        option(value='none') None
-                                        option(value='0') At time of event
-                                        option(value='5') 5 minutes before event
-                                        option(value='10') 10 minutes before event
-                                        option(value='15') 15 minutes before event
-                                        option(value='60') 1 hour before event
-                                        option(value='120') 2 hours before event
-                                        option(value='1440') 1 day before event
-                                        option(value='2880') 2 days before event
+                                div(class='alarm-container')
+                                        div(id='selectAlarm')
+                                                select(class='custom-select' name='alarm')
+                                                        option(value='none') None
+                                                        option(value='0') At time of event
+                                                        option(value='5') 5 minutes before event
+                                                        option(value='10') 10 minutes before event
+                                                        option(value='15') 15 minutes before event
+                                                        option(value='60') 1 hour before event
+                                                        option(value='120') 2 hours before event
+                                                        option(value='1440') 1 day before event
+                                                        option(value='2880') 2 days before event
+                                                span(class='glyphicon glyphicon-plus' style='padding-left:10px') 
                         div(style='margin-top:25px')                        
-                        button(type="submit" class="btn btn-danger" style="font-weight:bold;") Create Event
+                        button(type="submit" class="btn btn-danger" style="font-weight:bold; margin-bottom:50px;") Create Event
 
 block scripts
         script(type='text/javascript' src='/js/moment.js')
@@ -89,4 +99,23 @@ block scripts
                   $(".what").text("Create your event and share it");
               });
               });
+        script.
+              $(document).on('click','.glyphicon-plus', function(){
+                  $(this).parent().clone().appendTo(".alarm-container");
+                  $(this).removeClass('glyphicon-plus').addClass('glyphicon-minus');
+              });
+              $(document).on('click','.glyphicon-minus', function(){
+                  $(this).parent().remove();
+              })
+        script.
+                $('.form_ev').submit(function() {
+                if ($.trim($("#title_ev").val()) === "") {
+                    $('.alert-empty.name').show();
+                    return false;
+                }
+                if ($.trim($("#startDate").val()) === ""){
+                    $('.alert-empty.date').show();
+                    return false;
+                }
+            });
        

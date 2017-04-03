@@ -67,3 +67,10 @@ a:hover {
     font-weight: bold;
     display: block;
 }
+
+.alert-empty{
+    color: white;
+    padding-top : 5px;
+    margin-bottom: 10px;
+    display: none;
+}

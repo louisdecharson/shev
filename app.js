@@ -36,8 +36,10 @@ var db;
 var args = process.argv.slice(2);
 if (args[0] === 'home'){
     var url = "mongodb://localhost:27017/shev";
+    var myDomain = "http://localhost:8080";
 } else {
     var url = process.env.MONGODB_URI;
+    var myDomain = "http://sharev.herokuapp.com";
 }
 //
 mongodb.MongoClient.connect(url, function (err, database) {
@@ -66,26 +68,37 @@ function handleError(res, reason, message, code) {
 
 
 function buildCal(ev,callback) {
+    if (Array.isArray(ev.alarm)) {
+        var alarms = [];
+        ev.alarm.forEach(function(item,index){
+            if (item === 'none'){
+                if (item*1 !== 0) {
+                    var alarm = {type: 'display',trigger: item*60};
+                } else {
+                    var alarm = {type: 'display',trigger: 1};
+                }
+                alarms.push(alarm);
+            }
+        });
+    } else if (typeof ev.alarm != 'undefined') {
+        var alarms = {type: 'display', trigger: ev.alarm*60};
+    }
     var cal = ical({
         domain: 'shareevent',
-        name: 'Share Event calendar'
-    });
-    var event = cal.createEvent({
-        start: new Date(ev.startDate),
-        end: new Date(ev.endDate),
-        summary: ev.name,
-        description: ev.notes,
-        location: ev.loc
-    });
-    if (Array.isArray(ev.alarms)) {
-        ev.alarms.forEach(function(item,index){
-            event.createAlarm({type: 'display', trigger: item*60});
-        });
-    } else if (typeof ev.alarms != 'undefined') {
-        console.log(ev.alarms);
-        event.createAlarm({type: 'display', trigger: alarms*60});
-    }
-    callback(cal.toString());
+        name: 'Share Event calendar',
+        events: [
+            {
+                start: new Date(ev.startDate),
+                end: new Date(ev.endDate),
+                summary: ev.name,
+                description: ev.notes,
+                location: ev.loc,
+                alarms: alarms,
+                url: myDomain + '/view/'+ev.idEv
+            }
+        ]
+    }).toString();
+    callback(cal);
 };
 
 // ROUTES BELOW
@@ -119,13 +132,11 @@ app.post('/',function(req,res){
                     result.on('end',function() {
                         var timezone = JSON.parse(json)['timeZoneId'];
                         newEv.userDate = newEv.startDate;
-                        console.log(newEv.startDate);
                         var startDate = moment.tz(newEv.startDate,"MM/DD/YYYY h:mm A",timezone).format();
                         var endDate = moment.tz(newEv.endDate,"MM/DD/YYYY h:mm A",timezone).format();
                         newEv.startDate = startDate;
                         newEv.endDate = endDate;
                         newEv.timezone = timezone;
-                        console.log(newEv);
                         db.collection('events').insertOne(newEv, function(err, doc) {
                             if (err) {
                                 handleError(res, err.message, "Failed to create new event.");
