@@ -59,6 +59,7 @@ block content
 
 block scripts
         script(type='text/javascript' src='/js/moment.js')
+        script(type='text/javascript' src='/js/moment-timezone.js')
         script(type='text/javascript' src='/js/bootstrap-datetimepicker.min.js')
         script(type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAq92355tQVeKr_xPNXqUJXkg3meNMqhII&libraries=places')
 
@@ -116,6 +117,10 @@ block scripts
                 if ($.trim($("#startDate").val()) === ""){
                     $('.alert-empty.date').show();
                     return false;
+                }
+                if ($.trim($("#loc_ev").val()) === "") {
+                        $("#loc_ev").val() = moment.tz.guess();
+                        window.alert(moment.tz.guess());
                 }
             });
        

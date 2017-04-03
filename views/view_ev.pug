@@ -13,9 +13,11 @@ block stylesheets
 block content
         div(id='content')
                 h1(style="display:inline-block;") #{ev.name} 
-                a(href=ev.url style="margin-left: 20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save' style="color:white;"></span><br/>     
-                span(class='glyphicon glyphicon-map-marker') 
-                span #{ev.loc} <br/>
+                a(href=ev.url style="margin-left: 20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save' style="color:white;"></span><br/>
+                if ev.loc
+                        span(class='glyphicon glyphicon-map-marker') 
+                        span #{ev.loc} 
+                <br/>
                 if ev.day
                         span(class='glyphicon glyphicon-calendar')
                         span #{ev.day} <br/>
@@ -30,42 +32,47 @@ block content
                         span To:
                         span(style="visibility:hidden") From 
                         span(style="margin-left:-15px") #{ev.endTime}
+                if ev.loc
+                        br
+                        br
+                        div(id='map')
+                else
+                        br
                 br
-                br
-                div(id='map')
-                br
-                p Notes 
-                p(style="font-weight:normal;") #{ev.notes}
+                if ev.notes
+                        p Notes: 
+                                span(style="font-weight:normal !important;") #{ev.notes}
                 a(href=ev.url class="btn btn-primary" role="button" style="margin-right:20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save'></span> Copy event to calendar
                 button(id="linkEv" data-clipboard-text=ev.url class="btn btn-danger" role="button") <span class='glyphicon glyphicon-pushpin'></span> Copy link to clipboard        
                 
 block scripts
         script(src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js")
-        script.
-                L.mapbox.accessToken = 'pk.eyJ1IjoibG91aXNkZWNoYXJzb24iLCJhIjoiY2lsemFrYmNtMDBoOXc4bTV3M2pybzBmcSJ9.O4wshToxz8yiykD8q_IcQg';
-                var map = L.mapbox.map('map', 'mapbox.streets','mapbox.light');
-                var geocoder = L.mapbox.geocoder('mapbox.places');
-                geocoder.query('#{ev.loc}', showMap);
-                function showMap(err, data) {
-                if (data.lbounds) {
-                        map.fitBounds(data.lbounds);
-                } else if (data.latlng) {
-                        map.setView([data.latlng[0], data.latlng[1]], 15);
-                        var marker = {
-                            "type": "Feature",
-                            "geometry": {
-                            "type": "Point",
-                            "coordinates": [data.latlng[1], data.latlng[0]]
-                            },
-                            "properties": {
-                            "title": "#{ev.name}",
-                            "description": "#{ev.notes}",
-                            "marker-color": "#bf392b",
-                            "marker-size":"medium",
-                            }
-                            };
-                        var point = L.mapbox.featureLayer().setGeoJSON(marker).addTo(map);
-                }
-                }
+        if ev.loc
+                script.
+                        L.mapbox.accessToken = 'pk.eyJ1IjoibG91aXNkZWNoYXJzb24iLCJhIjoiY2lsemFrYmNtMDBoOXc4bTV3M2pybzBmcSJ9.O4wshToxz8yiykD8q_IcQg';
+                        var map = L.mapbox.map('map', 'mapbox.streets','mapbox.light');
+                        var geocoder = L.mapbox.geocoder('mapbox.places');
+                        geocoder.query('#{ev.loc}', showMap);
+                        function showMap(err, data) {
+                        if (data.lbounds) {
+                                map.fitBounds(data.lbounds);
+                        } else if (data.latlng) {
+                                map.setView([data.latlng[0], data.latlng[1]], 15);
+                                var marker = {
+                                    "type": "Feature",
+                                    "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [data.latlng[1], data.latlng[0]]
+                                    },
+                                    "properties": {
+                                    "title": "#{ev.name}",
+                                    "description": "",
+                                    "marker-color": "#bf392b",
+                                    "marker-size":"medium",
+                                    }
+                                    };
+                                var point = L.mapbox.featureLayer().setGeoJSON(marker).addTo(map);
+                        }
+                        }
         script.
                 var clipboard = new Clipboard('#linkEv');

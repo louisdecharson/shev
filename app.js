@@ -101,16 +101,8 @@ function buildCal(ev,callback) {
     callback(cal);
 };
 
-// ROUTES BELOW
-// ============ //
-app.get('/',function(req,res){
-    res.render('index');
-});
-
-app.post('/',function(req,res){
-    var newEv = req.body;
-    newEv.idEv = shortid.generate();
-    if (newEv.loc !== undefined) {
+function getTimezone(newEv,callback) {
+    if (newEv.loc !== undefined && newEv.loc.trim() !== "") {
         var mapboxClient = new MapboxClient(process.env.MAPBOX_ACCESSTOKEN);
         var options = {query: newEv.loc,limit: 1};
         mapboxClient.geocodeForward(newEv.loc, options, function(err, response) {
@@ -131,34 +123,50 @@ app.post('/',function(req,res){
                     });
                     result.on('end',function() {
                         var timezone = JSON.parse(json)['timeZoneId'];
-                        newEv.userDate = newEv.startDate;
-                        var startDate = moment.tz(newEv.startDate,"MM/DD/YYYY h:mm A",timezone).format();
-                        var endDate = moment.tz(newEv.endDate,"MM/DD/YYYY h:mm A",timezone).format();
-                        newEv.startDate = startDate;
-                        newEv.endDate = endDate;
-                        newEv.timezone = timezone;
-                        db.collection('events').insertOne(newEv, function(err, doc) {
-                            if (err) {
-                                handleError(res, err.message, "Failed to create new event.");
-                            } else {
-                                res.redirect('/view/'+newEv.idEv);
-                            }
-                        });
+                        callback(timezone);
                     });
                 } else {
-                }
-            });
+                    console.log('Error when retreiving GMaps timezone',result.statusCode, result.statusMessage);
+                    callback('');
+                }});
         });
     } else {
+        callback('');
+    }
+}
+
+// ROUTES BELOW
+// ============ //
+app.get('/',function(req,res){
+    res.render('index');
+});
+
+app.post('/',function(req,res){
+    var newEv = req.body;
+    newEv.idEv = shortid.generate();
+    getTimezone(newEv,function(timezone) {
+        if (timezone !== '') {
+            newEv.timezone = timezone;
+            newEv.userDate = newEv.startDate;
+            // var startDate = moment.tz(newEv.startDate,"MM/DD/YYYY h:mm A",timezone).format();
+            // var endDate = moment.tz(newEv.endDate,"MM/DD/YYYY h:mm A",timezone).format();
+            newEv.startDate = moment.tz(newEv.startDate,"MM/DD/YYYY h:mm A",timezone).format();;
+            newEv.endDate = moment.tz(newEv.endDate,"MM/DD/YYYY h:mm A",timezone).format();;
+        } else {
+            newEv.timezone = 'GMT';
+            newEv.userDate = newEv.startDate;
+            newEv.startDate = moment.tz(newEv.startDate,"MM/DD/YYYY h:mm A",'GMT').format();
+            newEv.endDate = moment.tz(newEv.endDate,"MM/DD/YYYY h:mm A",'GMT').format();
+            newEv.notes = newEv.notes + ' Warning, time is set by default at GMT.';
+        }
         db.collection('events').insertOne(newEv, function(err, doc) {
-            newEv.notes = newEv.notes + ' WARNING : TIME IS GMT';
             if (err) {
                 handleError(res, err.message, "Failed to create new event.");
             } else {
                 res.redirect('/view/'+newEv.idEv);
             }
         });
-    }
+    });
 });
 
 app.get('/view/:id',function(req,res){
