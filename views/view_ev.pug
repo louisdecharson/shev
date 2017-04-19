@@ -11,6 +11,10 @@ block stylesheets
         link(rel='stylesheet' type='text/css' href='/css/bootstrap.min.css')
 
 block content
+        a(href="./../")
+                span(id='navbar' style='display:block;')
+                        img(src='/img/shev.png' width="80" height="80" id="icon") 
+                        span(id="title") Share Event
         div(id='content')
                 h1(style="display:inline-block;") #{ev.name} 
                 a(href=ev.url style="margin-left: 20px !important; margin-top:20px !important;") <span class='glyphicon glyphicon-save' style="color:white;"></span><br/>

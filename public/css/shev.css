@@ -34,6 +34,24 @@ h1, h2, h3, h4, h5, h6, p, label, .btn, a {
     margin-legt: -10px;
 }
 
+#navbar{
+    margin-top: -5%;
+    margin-left: 0%;
+}
+#title {
+    color:white;
+    font-size: 130%;
+    font-weight: bold;
+    font: 'Marker Felt';
+    text-align:center;
+}
+
+.icon {
+    margin-top: -25px;
+    margin-right: -10px;
+    margin-legt: -10px;
+}
+
 a {
     color:white;
 }
