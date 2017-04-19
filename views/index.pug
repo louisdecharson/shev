@@ -3,7 +3,9 @@ block stylesheets
         link(rel='stylesheet' type='text/css' href='/css/bootstrap.min.css')
         link(rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css')
 block content
-        div(class='title') Share Event
+        span(class='titlespan' style='display:block;')
+                img(src='/img/shev.png' width="160" height="160" class="icon") 
+                span(class='title') Share Event
         p(class='what') Share events with friends via an <i>unique</i> link.
         button(class="btn btn-danger" style="margin-top:3%" id="showForm") Create Event
         div(class='form_ev')
@@ -95,7 +97,8 @@ block scripts
               $("#showForm").click(function(){
                   $("#showForm").hide();
                   $("#hiddenform").show(500);
-                  $(".title").css("margin-top", "1%");
+                  $(".titlespan").css("margin-top", "1%");
+                  $('.icon').hide();
                   $(".title").text("New Event");
                   $(".what").text("Create your event and share it");
               });

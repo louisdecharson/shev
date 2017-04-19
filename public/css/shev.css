@@ -17,15 +17,22 @@ h1, h2, h3, h4, h5, h6, p, label, .btn, a {
 .title {
     color:white;
     font-size: 400%;
-    margin-top: 5%;
     font-weight: bold;
-    margin-left: 20%;
-    margin-right: 20%;
     padding: 1%;
     text-align:center;
     /* background-color: rgba(191, 57, 43, 0.2) !important; */
 }
-
+.titlespan{
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align:center;
+}
+.icon {
+    margin-top: -25px;
+    margin-right: -10px;
+    margin-legt: -10px;
+}
 
 a {
     color:white;
