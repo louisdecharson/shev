@@ -1,7 +1,7 @@
 extends layout
 block variables
-    - title = ev.title
-    - ogDescription = ev.loc + ", " + ev.startTime + " - " + ev.endTime
+    - title = ev.name
+    - ogDescripion = ev.loc + ", " + ev.startTime + " - " + ev.endTime
 block stylesheets
         script(src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js')
         link(rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css')

@@ -180,7 +180,6 @@ app.post('/',function(req,res){
 app.get('/view/:id',function(req,res){
     var idEv =  req.params.id;
     db.collection('events').findOne({'idEv': idEv},{'name':1,'loc':1,'startDate':1, 'endDate':1,'notes':1,'alarm':1,'idEv':1, 'timezone':1}, function(err,doc) {
-        console.log(err,doc);
         if (err) {
             handleError(res,err.message,"Failed to get post");
         } else if (doc !== null) {
@@ -206,7 +205,6 @@ app.get('/view/:id',function(req,res){
 app.get('/ev/:id',function(req,res){
     var idEv =  req.params.id;
     db.collection('events').findOne({'idEv': idEv},{'name':1,'loc':1,'startDate':1, 'endDate':1,'notes':1,'alarm':1,'idEv':1}, function(err,doc) {
-        console.log(err,doc);
         if (err) {
             handleError(res,err.message,"Failed to get post");
         } else if (doc !== null) {
