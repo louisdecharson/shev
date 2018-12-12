@@ -1,18 +1,31 @@
+- var title = "Share Event"
+- var image = "http://sharev.herokuapp.com/img/og.jpg"
+- var ogDescripion = "Share events easily with your friends !"
+block variables
 doctype html
 html
-  head
-    title Share Events
-    meta(http-equiv="Content-Type" content="text/html;charset=UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-    // BOOTSTRAP 4
-    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css' integrity='sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY' crossorigin='anonymous')
-    link(rel='stylesheet' type='text/css' href='/css/shev.css')
-    block stylesheets
+    head
+        title Share Events
+        meta(http-equiv="Content-Type" content="text/html;charset=UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        meta(property="og:locale" content="fr_FR")/
+        meta(property="og:title" content=title)/
+        meta(property="og:description" content=ogDescripion)/
+        meta(property="og:type" content="website")/
+        meta(property="og:image" content=image)/
+        // BOOTSTRAP 4
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css' integrity='sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY' crossorigin='anonymous')
+        link(rel='stylesheet' type='text/css' href='/css/shev.css')
+        block stylesheets
+            
+    body
+        block content
+        
+            
+        script(type='text/javascript' src='https://www.atlasestateagents.co.uk/javascript/tether.min.js')
+        script(type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js' integrity='sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=' crossorigin='anonymous')
+        script(type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js' integrity='sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD' crossorigin='anonymous')
 
-  body
-          block content
-          script(type='text/javascript' src='https://www.atlasestateagents.co.uk/javascript/tether.min.js')
-          script(type='text/javascript' src='https://code.jquery.com/jquery-3.1.0.min.js' integrity='sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=' crossorigin='anonymous')
-          script(type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js' integrity='sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD' crossorigin='anonymous')
-          block scripts
-    
+        // Additional scripts
+        block scripts
+
